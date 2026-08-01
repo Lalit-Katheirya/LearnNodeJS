@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler';
+
 
 // Not found middleware
 export const notFound = (req, res, next) => {
@@ -65,4 +65,4 @@ export const errorHandler = (err, req, res, next) => {
 };
 
 // Export asyncHandler for use in routes
-export { asyncHandler }; 
+export { default as asyncHandler } from 'express-async-handler'; 

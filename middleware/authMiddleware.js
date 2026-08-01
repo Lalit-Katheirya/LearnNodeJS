@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler';
+import expressAsyncHandler from 'express-async-handler';
 import User from '../Models/userModel.js';
 
 // Protect routes - require authentication
-export const protect = asyncHandler(async (req, res, next) => {
+export const protect = expressAsyncHandler(async (req, res, next) => {
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -57,7 +57,7 @@ export const vendor = (req, res, next) => {
 };
 
 // Optional auth middleware (for public routes that can show different content for logged users)
-export const optionalAuth = asyncHandler(async (req, res, next) => {
+export const optionalAuth = expressAsyncHandler(async (req, res, next) => {
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -75,8 +75,19 @@ export const optionalAuth = asyncHandler(async (req, res, next) => {
 });
 
 // Generate JWT token
-export const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+export const generateJWTtoken = (user) => {
+  console.Console.log(process.env.JWT_SECRET);
+
+  // Set JWT expiration it will tack 3 prams payload id, secret, options
+
+  const payload = {
+    _id:user._id,
+    email:user.email,
+    role:user.role
+  }
+
+  const secretKey = process.env.JWT_SECRET;
+  return jwt.sign(payload, secretKey, {
     expiresIn: process.env.JWT_EXPIRE || '30d',
   });
 }; 
